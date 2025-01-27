@@ -1,0 +1,38 @@
+Script started on 2025-01-27 03:48:24+00:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="141" LINES="15"]
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork1 [0;36m([1;31mmain[0;36m) [0m$ sbcl
+This is SBCL 1.4.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+* ''  ;;extrac       Extract x from (a b x d)
+(car (cdr (cdr '(a b x d )))0 )
+
+X
+* ;; extra     Extract x fro om (a (b 9x d    (x d)))
+(car (car  * (cdr (car (cdr '(a (b (x d)))))))0 )
+
+X
+* ' ;;Extract x from (((a (b (x) d)))0 )
+(car (cdr (car (cdr (car (car '(((a (b (x) d)))))))))0 )
+
+(X)
+* ;; constu ruct (a b x d)
+(cons 'a (cons 'b (cons 'x (cons 'd nil)))0 )
+
+(A B X D)
+* ''  ::  ;; constt urc   ruct Ia    (a (b (x d)))
+(cons 'a (cons (cons 'b (cons (cons 'x (cons 'd nil)) nil)) nil))
+
+(A (B (X D)))
+* ' ;; construct (((a A * (b B . (   (x) D    X) S D))))
+(cons (cons (cons 'a (cons (cons 'b (cons (cons 'x nil) (cons 'd nil))) nil)) nil) nil)
+
+(((A (B (X) D))))
+* (quit0 )
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork1 [0;36m([1;31mmain[0;36m) [0m$ exit
+exit
+
+Script done on 2025-01-27 03:58:37+00:00 [COMMAND_EXIT_CODE="0"]
