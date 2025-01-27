@@ -1,0 +1,38 @@
+Script started on 2025-01-27 03:48:24+00:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="141" LINES="15"]
+@ragas123-cpu ➜ /workspaces/csci-330-homeworks-ragas123-cpu/Hwork1 (main) $ sbcl
+This is SBCL 1.4.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+* ;; Extract x from (a b x d)
+(car (cdr (cdr '(a b x d ))))
+
+X
+* ;; Extract x from (a (b (x d)))
+(car (car  (cdr (car (cdr '(a (b (x d))))))))
+
+X
+* ;;Extract x from (((a (b (x) d))))
+(car (cdr (car (cdr (car (car '(((a (b (x) d))))))))))
+
+X
+* ;; construct (a b x d)
+(cons 'a (cons 'b (cons 'x (cons 'd nil))))
+
+(A B X D)
+* ;; construct (a (b (x d)))
+(cons 'a (cons (cons 'b (cons (cons 'x (cons 'd nil)) nil)) nil))
+
+(A (B (X D)))
+* ;; construct (((A (B (X) D))))
+(cons (cons (cons 'a (cons (cons 'b (cons (cons 'x nil) (cons 'd nil))) nil)) nil) nil)
+
+(((A (B (X) D))))
+* (quit)
+@ragas123-cpu ➜ /workspaces/csci-330-homeworks-ragas123-cpu/Hwork1 (main) $ exit
+exit
+
+Script done on 2025-01-27 03:58:37+00:00 [COMMAND_EXIT_CODE="0"]
