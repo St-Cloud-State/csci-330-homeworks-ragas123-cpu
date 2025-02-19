@@ -1,0 +1,48 @@
+Script started on 2025-02-18 21:43:02+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="154" LINES="16"]
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ cat mergesort_recursive[K[Kve.lisp
+(defun split-list (lst)
+  "Splits a list into two nearly equal halves recursively."
+  (if (or (null lst) (null (cdr lst)))  ; Base case: List has 0 or 1 element
+      (values lst nil)
+      (let ((first nil)
+            (second nil))
+        (loop for (a b) on lst by #'cddr do
+              (push a first)
+              (when b (push b second)))
+        (values (nreverse first) (nreverse second)))))
+(defun merge-lists (lst1 lst2)
+  "Merges two sorted lists recursively."
+  (cond ((null lst1) lst2)  ; If first list is empty, return second
+        ((null lst2) lst1)  ; If second list is empty, return first
+        ((<= (car lst1) (car lst2))  ; Compare first elements
+         (cons (car lst1) (merge-lists (cdr lst1) lst2)))
+        (t (cons (car lst2) (merge-lists lst1 (cdr lst2))))))
+(defun merge-lists (lst1 lst2)
+  "Merges two sorted lists recursively."
+  (cond ((null lst1) lst2)  ; If first list is empty, return second
+        ((null lst2) lst1)  ; If second list is empty, return first
+        ((<= (car lst1) (car lst2))  ; Compare first elements
+         (cons (car lst1) (merge-lists (cdr lst1) lst2)))
+        (t (cons (car lst2) (merge-lists lst1 (cdr lst2))))))
+(defun mergesort (lst)
+  "Mergesort algorithm using the partition and merge functions."
+  (if (or (null lst) (null (cdr lst)))  ; Base case: list with 0 or 1 element
+      lst
+      (multiple-value-bind (first-half second-half) (split-list lst)
+        (merge-lists (mergesort first-half) (mergesort second-half)))))
+(print (mergesort '(4 1 7 3 9 2 6 5 8)))  
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ sbcl --load qui[K[K[Kmergesort_recir[K[Kursive.lisp
+This is SBCL 1.4.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+(1 2 3 4 5 6 7 8 9) 
+* (quit)
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ exit
+exit
+
+Script done on 2025-02-18 21:43:51+00:00 [COMMAND_EXIT_CODE="0"]

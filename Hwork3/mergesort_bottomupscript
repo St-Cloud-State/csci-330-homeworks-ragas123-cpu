@@ -1,0 +1,97 @@
+Script started on 2025-02-19 05:55:49+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="154" LINES="16"]
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ cat mergesort)[K_boo[Kttomupscr[K[K[K.lisp
+(defun merge-lists (list1 list2)
+  "Merge two sorted lists into one sorted list."
+  (cond
+    ((null list1) list2)
+    ((null list2) list1)
+    ((<= (car list1) (car list2))
+     (cons (car list1) (merge-lists (cdr list1) list2)))
+    (t
+     (cons (car list2) (merge-lists list1 (cdr list2))))))
+
+(defun pairwise-sort (lst)
+  "Partition the list into sorted pairs."
+  (cond
+    ((null lst) nil)
+    ((null (cdr lst)) (list lst))
+    (t
+     (let ((first (car lst))
+           (second (cadr lst))
+           (rest (cddr lst)))
+       (if (<= first second)
+           (cons (list first second) (pairwise-sort rest))
+           (cons (list second first) (pairwise-sort rest)))))))
+
+(defun merge-pass (lst)
+  "Merge adjacent lists in a single pass."
+  (format t "Merging pass: ~a~%" lst) ;; Prints the current state before merging
+  (cond
+    ((null lst) nil)
+    ((null (cdr lst)) lst)
+    (t (let ((merged (merge-lists (car lst) (cadr lst))))
+         (format t "Merging ~a and ~a -> ~a~%" (car lst) (cadr lst) merged)
+         (cons merged (merge-pass (cddr lst)))))))
+
+(defun bottom-up-mergesort (lst)
+  "Bottom-up merge sort implementation."
+  (let ((sorted-pairs (pairwise-sort lst)))
+    (format t "First pass (sorted pairs): ~a~%" sorted-pairs) ;; Capturing first pass
+    (loop while (> (length sorted-pairs) 1) do
+      (setq sorted-pairs (merge-pass sorted-pairs)))
+    (car sorted-pairs)))
+
+;; Example usage:
+(print (bottom-up-mergesort '(1 7 2 1 8 6 5 3 7 9 4)))
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ l[Ksbcl --lpad[K[K[K0a[K[Koaf m[K[K[Kdmer[K[K[K mergesort_bottom.lisp
+This is SBCL 1.4.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+debugger invoked on a SB-INT:SIMPLE-FILE-ERROR in thread
+#<THREAD "main thread" RUNNING {9461061}>:
+  Couldn't load #P"mergesort_bottom.lisp": file does not exist.
+
+Type HELP for debugger help, or (SB-EXT:EXIT) to exit from SBCL.
+
+restarts (invokable by number or by possibly-abbreviated name):
+  0: [CONTINUE] Ignore runtime option --load "mergesort_bottom.lisp".
+  1: [ABORT   ] Skip rest of --eval and --load options.
+  2:            Skip to toplevel READ/EVAL/PRINT loop.
+  3: [EXIT    ] Exit SBCL (calling #'EXIT, killing the process).
+
+(LOAD #P"mergesort_bottom.lisp" :VERBOSE NIL :PRINT NIL :IF-DOES-NOT-EXIST T :EXTERNAL-FORMAT :DEFAULT)
+0] 3
+[0;32m@ragas123-cpu [1;31m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ load[K[K[Ks[K[Ksbcl --load mere[Kgespr[K[Kort_bottomup.lisp
+This is SBCL 1.4.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+First pass (sorted pairs): ((1 7) (1 2) (6 8) (3 5) (7 9) (4))
+Merging pass: ((1 7) (1 2) (6 8) (3 5) (7 9) (4))
+Merging (1 7) and (1 2) -> (1 1 2 7)
+Merging pass: ((6 8) (3 5) (7 9) (4))
+Merging (6 8) and (3 5) -> (3 5 6 8)
+Merging pass: ((7 9) (4))
+Merging (7 9) and (4) -> (4 7 9)
+Merging pass: NIL
+Merging pass: ((1 1 2 7) (3 5 6 8) (4 7 9))
+Merging (1 1 2 7) and (3 5 6 8) -> (1 1 2 3 5 6 7 8)
+Merging pass: ((4 7 9))
+Merging pass: ((1 1 2 3 5 6 7 8) (4 7 9))
+Merging (1 1 2 3 5 6 7 8) and (4 7 9) -> (1 1 2 3 4 5 6 7 7 8 9)
+Merging pass: NIL
+
+(1 1 2 3 4 5 6 7 7 8 9) 
+* (quit)
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ exit
+exit
+
+Script done on 2025-02-19 05:56:54+00:00 [COMMAND_EXIT_CODE="0"]

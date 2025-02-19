@@ -1,0 +1,36 @@
+Script started on 2025-02-19 00:48:06+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="154" LINES="16"]
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ cat insertion_sort.lisp
+(defun insert-into-sorted (x sorted)
+  "Inserts an element X into a sorted list in ascending order."
+  (cond
+    ((null sorted) (list x))  ; If sorted list is empty, return single element list
+    ((<= x (car sorted)) (cons x sorted))  ; Insert at the beginning if smaller
+    (t (cons (car sorted) (insert-into-sorted x (cdr sorted))))))  ; Recursively insert
+
+(defun insertion-sort-helper (sorted unsorted)
+  "Recursive helper function for insertion sort."
+  (if (null unsorted)
+      sorted  ; If no unsorted elements left, return sorted list
+      (insertion-sort-helper
+        (insert-into-sorted (car unsorted) sorted)  ; Insert first element into sorted list
+        (cdr unsorted))))  ; Continue with remaining elements
+
+(defun insertion-sort (lst)
+  "Insertion Sort implementation in Lisp."
+  (insertion-sort-helper nil lst))  ; Start with an empty sorted list
+(print (insertion-sort '(5 3 8 1 2 9 4 7 6)))
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ sbcl --load insertion_sort.lisp
+This is SBCL 1.4.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+
+(1 2 3 4 5 6 7 8 9) 
+* (quit)
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork3 [0;36m([1;31mmain[0;36m) [0m$ exit
+exit
+
+Script done on 2025-02-19 00:48:37+00:00 [COMMAND_EXIT_CODE="0"]
