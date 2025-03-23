@@ -1,0 +1,116 @@
+Script started on 2025-03-23 06:41:15+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="307" LINES="16"]
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork5 [0;36m([1;31mmain[0;36m) [0m$ cat parser.lisp
+(defun match (token input)
+  (if (and input (> (length input) 0) (char= (char input 0) token))
+      (subseq input 1)
+      nil))
+
+(defun parse-Lprime (input)
+  (if (and input (> (length input) 0) (char= (char input 0) #\s))
+      (let ((rest (match #\s input)))
+        (when rest
+          (parse-Lprime rest)))
+      input)) ; ε-case
+
+(defun parse-L (input)
+  (let ((rest (match #\s input)))
+    (when rest
+      (parse-Lprime rest))))
+
+(defun parse-S (input)
+  (cond
+    ((and input (> (length input) 0) (char= (char input 0) #\s))
+     (match #\s input))
+    ((and input (> (length input) 0) (char= (char input 0) #\d))
+     (let ((rest (match #\d input)))
+       (when rest
+         (let ((l (parse-L rest)))
+           (when l
+             (match #\b l))))))
+    (t nil)))
+
+(defun parse-G (input)
+  (if (and input (> (length input) 0)
+           (member (char input 0) '(#\x #\y #\z #\w)))
+      (subseq input 1)
+      nil))
+
+(defun parse-Eprime (input)
+  (if (and input (> (length input) 0) (char= (char input 0) #\o))
+      (let ((rest (match #\o input)))
+        (when rest
+          (let ((g (parse-G rest)))
+            (when g
+              (parse-Eprime g)))))
+      input)) ; ε case
+
+(defun parse-E (input)
+  (let ((g (parse-G input)))
+    (when g
+      (parse-Eprime g))))
+
+(defun parse-Iprime (input)
+  (if (and input (> (length input) 0) (char= (char input 0) #\e))
+      (let ((rest (match #\e input)))
+        (when rest
+          (parse-S rest)))
+      input)) ; ε case
+
+(defun parse-I (input)
+  (let ((rest (match #\i input)))
+    (when rest
+      (let ((e (parse-E rest)))
+        (when e
+          (let ((s (parse-S e)))
+            (when s
+              (parse-Iprime s))))))))
+
+(defun accept (input)
+  (let ((result (parse-I input)))
+    (and result (string= result "")))) ; input fully consumed
+
+(defun test-14-strings ()
+  (let ((valid '("ixoyowdssbes" "ixoys" "ixozs" "ixozdssb"
+                 "ixoyowdssb" "ixozdssbes" "ixydssb"))
+        (invalid '("ixoyowdssbess" "ixoy" "ixoysx" "ixozdss"
+                   "ixoyowdssbe" "ixozddssb" "ixydssbx")))
+    (format t "~%Testing Valid Strings:~%")
+    (dolist (str valid)
+      (format t "~a => ~a~%" str (if (accept str) "Accepted" "Rejected")))
+    
+    (format t "~%Testing Invalid Strings:~%")
+    (dolist (str invalid)
+      (format t "~a => ~a~%" str (if (accept str) "Accepted" "Rejected")))))
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork5 [0;36m([1;31mmain[0;36m) [0m$ sbcl --lpad[K[K[K0ad [K[K[K[Koa [Kd parser.lisp
+This is SBCL 1.4.3, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+* (test-14-strings)
+
+Testing Valid Strings:
+ixoyowdssbes => Accepted
+ixoys => Accepted
+ixozs => Accepted
+ixozdssb => Accepted
+ixoyowdssb => Accepted
+ixozdssbes => Accepted
+ixydssb => Rejected
+
+Testing Invalid Strings:
+ixoyowdssbess => Rejected
+ixoy => Rejected
+ixoysx => Rejected
+ixozdss => Rejected
+ixoyowdssbe => Rejected
+ixozddssb => Rejected
+ixydssbx => Rejected
+NIL
+* (qiot)    uit)
+[0;32m@ragas123-cpu [0m➜ [1;34m/workspaces/csci-330-homeworks-ragas123-cpu/Hwork5 [0;36m([1;31mmain[0;36m) [0m$ exit
+exit
+
+Script done on 2025-03-23 06:41:48+00:00 [COMMAND_EXIT_CODE="0"]
